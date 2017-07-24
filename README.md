@@ -39,6 +39,6 @@ Em seguida deve-se executar também localmente o front end, para isso existem du
 
 ## License
 
-O projeto aqui presente está disponvel apenas para fins de testes, não sendo autorizada a alteração do mesmo.
+O projeto aqui presente está disponível apenas para fins de testes, não sendo autorizada a alteração do mesmo.
 
 
