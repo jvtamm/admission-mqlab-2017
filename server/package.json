@@ -1,0 +1,18 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server side for admission process project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "blob-stream": "^0.1.3",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "pdfkit": "^0.8.3",
+    "string-pixel-width": "^1.0.7"
+  }
+}

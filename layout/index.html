@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Formulário de Inscrição</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="assets/js/vue-mask.js"></script>
+</head>
+<body onload="reset()">
+	<div id="cadastro">
+		<form action="http://localhost:3000/relatorio"  target="_blank" method="post" onsubmit="setTimeout(function () { window.location.reload(); }, 1)">
+			<h1 id="form-section-title">{{tituloAtual}}</h1>
+			<transition name="fade" >
+			<div v-show="pagina == 0" id="pessoal">
+				<div class="input-box">
+					<label for="nome" :class="{'sucesso':preenchido(nome)}"><i v-if="preenchido(nome)" class="fa fa-check" aria-hidden="true"></i>Nome:*</label>
+					<input v-model.trim="nome" :class="{'sucesso-input': preenchido(nome)}" placeholder="Ex: Ned" type="text" name="nome" id="nome">
+				</div>
+				<div class="input-box">
+					<label for="sobrenome" :class="{'sucesso':preenchido(sobrenome)}"><i v-if="preenchido(sobrenome)" class="fa fa-check" aria-hidden="true"></i>Sobrenome:*</label>
+					<input v-model.trim="sobrenome" :class="{'sucesso-input': preenchido(sobrenome)}" type="text" placeholder="Ex: Stark" name="sobrenome" id="sobrenome">
+				</div>
+				<div class="input-box">
+					<label for="sexo">Sexo:</label>
+					<select v-model.trim="sexo" type="text" name="sexo" id="sexo">
+						<option selected>Masculino</option>
+						<option>Feminino</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="telefone" :class="{'sucesso': entradaValida(telefone, 14)}"><i v-if="entradaValida(telefone, 14)" class="fa fa-check" aria-hidden="true"></i>Telefone:*</label>
+					<the-mask :mask="['(##) ####-####', '(##) #####-####']" masked="true" v-model.trim="telefone" :class="{'sucesso-input': entradaValida(telefone, 14)}" type="text" placeholder="Telefone" name="telefone" id="telefone">
+				</div>
+				<div class="input-box">
+					<label for="email" :class="{'sucesso':validarEmail}"><i v-if="validarEmail" class="fa fa-check" aria-hidden="true"></i>
+E-mail:*</label>
+					<input v-model.trim="email" :class="{'sucesso-input':validarEmail}" placeholder="Ex: example@gmail.com" type="text" name="email" id="email">
+				</div>
+				<div class="input-box">
+					<label for="data" :class="{'sucesso':entradaValida(datanasc, 8)}"><i v-if="entradaValida(datanasc, 8)" class="fa fa-check" aria-hidden="true"></i>Data de Nascimento:*</label>
+					<the-mask :mask="['##/##/####']" masked="true" v-model.trim="datanasc" :class="{'sucesso-input': entradaValida(datanasc, 10)}" placeholder="Ex: 12/12/2012" name="datanasc" id="data">
+				</div>
+				<div class="input-box">
+					<label for="rg" :class="{'sucesso':entradaValida(rg, 10)}"><i v-if="entradaValida(rg, 13)" class="fa fa-check" aria-hidden="true"></i>RG:*</label>
+					<the-mask :mask="['AA-##.###.###']" masked="true" placeholder="RG" v-model.trim="rg" :class="{'sucesso-input': entradaValida(rg, 10)}" name="rg" id="rg">
+				</div>
+				<div class="input-box">
+					<label for="cpf" :class="{'sucesso':entradaValida(cpf, 14)}"><i v-if="entradaValida(cpf, 14)" class="fa fa-check" aria-hidden="true"></i>CPF:*</label>
+					<the-mask :mask="['###.###.###-##']" masked="true" placeholder="CPF" v-model.trim="cpf" :class="{'sucesso-input': entradaValida(cpf, 11)}" name="cpf" id="cpf">
+				</div>								
+			</div>
+			</transition>
+			<transition name="fade" >
+			<div v-show="pagina == 1" id="endereco">
+				<div class="input-box">
+					<label for="cep">CEP(Opcional):</label>
+					<input v-model.trim="cep" v-on:keyup="buscaCep" placeholder="CEP" type="text" name="cep" id="cep">
+				</div>
+				<div class="input-box">
+					<label for="logradouro" :class="{'sucesso':preenchido(logradouro)}"><i v-if="preenchido(logradouro)" class="fa fa-check" aria-hidden="true"></i>Logradouro:*</label>
+					<input v-model.trim="logradouro" :class="{'sucesso-input': preenchido(logradouro)}" placeholder="Logradouro" type="text" name="logradouro" id="logradouro">
+				</div>
+				<div class="input-box">
+					<label for="numero">Número(Opcional):</label>
+					<input v-model.trim="numero" type="text" placeholder="Número" name="numero" id="numero">
+				</div>
+				<div class="input-box">
+					<label for="complemento">Complemento(Opcional):</label>
+					<input v-model.trim="complemento" type="text" placeholder="Complemento" name="complemento" id="complemento">
+				</div>
+				<div class="input-box">
+					<label for="bairro" :class="{'sucesso':preenchido(bairro)}"><i v-if="preenchido(bairro)" class="fa fa-check" aria-hidden="true"></i>Bairro:*</label>
+					<input v-model.trim="bairro" :class="{'sucesso-input': preenchido(bairro)}" type="text" placeholder="Bairro" name="bairro" id="bairro">
+				</div>
+				<div class="input-box">
+					<label for="cidade" :class="{'sucesso':preenchido(cidade)}"><i v-if="preenchido(cidade)" class="fa fa-check" aria-hidden="true"></i>Cidade:*</label>
+					<input v-model.trim="cidade" :class="{'sucesso-input': preenchido(cidade)}" type="select" placeholder="Cidade" name="cidade" id="cidade"> 
+				</div>
+				<div class="input-box">
+					<label for="nome" :class="{'sucesso':preenchido(estado)}"><i v-if="preenchido(estado)" class="fa fa-check" aria-hidden="true"></i>Estado:*</label>
+					<input v-model.trim="estado" :class="{'sucesso-input': preenchido(estado)}" type="text" placeholder="Estado" name="estado" id="estado">
+				</div>
+				<div class="input-box">
+					<label for="nome" :class="{'sucesso':preenchido(pais)}"><i v-if="preenchido(pais)" class="fa fa-check" aria-hidden="true"></i>País:*</label>
+					<input v-model.trim="pais" :class="{'sucesso-input': preenchido(pais)}" type="text" placeholder="País" name="pais" id="pais">
+				</div>
+			</div>
+			</transition>
+			<transition name="fade">
+			<div v-show="pagina == 2" id="curso">
+				<div class="input-box">
+					<label for="unidade1">Primeira Opção de Unidade:*</label>
+					<select v-model.trim="unidade1" type="text" name="unidade1" id="unidade1" ref="unidade1">
+						<option v-for="unidade in unidades">{{unidade}}</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="curso1">Primeira Opção de Curso:*</label>
+					<select v-model.trim="opcao1" type="text" placeholder="Selecione" name="curso1" id="curso1" ref="curso1">
+						<option v-for="curso in cursosOpcao1">{{curso}}</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="unidade2">Segunda Opção de Unidade:*</label>
+					<select v-model.trim="unidade2" type="text" name="unidade2" id="unidade-2" ref="unidade2">
+						<option v-for="unidade in unidades">{{unidade}}</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="curso2">Segunda Opção de Curso:*</label>
+					<select v-model.trim="opcao2" type="text" name="curso2" id="curso2" ref="curso2">
+						<option v-for="curso in cursosOpcao2">{{curso}}</option>
+					</select>
+				</div>
+			</div>
+			</transition>
+			<transition name="fade">
+			<div v-show="pagina == 3" id="assinatura">
+				<p v-on:click="assinador_ativo = true">{{assinatura_msg}}</p>
+				<span v-if="assinou">CONFIRA SUA ASSINATURA:</span>
+				<img id="assinatura-img" v-if="assinou" v-bind:src="img_source" alt="">
+				<input id="img_source" name="assinatura" v-bind:value="img_source" type="hidden">
+			</div>
+			</transition>
+			<div class="form-footer">
+				<button v-on:click="passarPagina" :class="{'desativado': !validarPagina}" v-if="pagina < 3" id="continuar">{{botaoMsg}} <i class="fa fa-caret-right" aria-hidden="true"></i></button>
+				<button type="submit" :class="{'desativado': !validarPagina}" :disabled="!validarPagina" v-if="pagina == 3" id="enviar">{{botaoMsg}} <i class="fa fa-caret-up" aria-hidden="true"></i></button>
+				<button v-on:click="voltarPagina" v-if="pagina > 0" id="voltar"><i class="fa fa-caret-left" aria-hidden="true"></i> Voltar</button>
+			</div>
+		</form>
+	</div>
+	<div id="overlay" class="overlay"></div>
+	<div id="paint">
+		<span id="confirmar">Confirmar</span>
+		<span id="limpar">Limpar</span>
+		<span id="cancelar">Cancelar</span>
+		<canvas id="canvas"></canvas>
+	</div>
+	<script src="assets/js/canvas.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+</html>
