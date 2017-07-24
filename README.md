@@ -16,7 +16,7 @@ npm install --save express body-parser pdfkit string-pixel-width blob-stream
 
 ### Installing
 
-A instalação consiste em apenas executar o download de todos os arquivos presentes neste repositório.
+A instalação consiste em apenas executar o download de todos os arquivos presentes neste repositório assim como dos pre-requisitos.
 
 ## Executing
 
