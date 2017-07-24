@@ -20,7 +20,7 @@ A instalação consiste em apenas executar o download de todos os arquivos prese
 
 ## Executing
 
-Assim que todos os arquivos necessários estiverem na máquina local e os programas adicionais devidamente instalados deve-se então inicializar o servidor realizando os seguintes procedimentos. A partir da pasta root do projeto acesse, através da linha de comando, o diretorio denominado *server* e em seguida de um start no servidor, para isso os comandos linux/OSX necessários podem ser encontrados abaixo:
+Assim que todos os arquivos necessários estiverem na máquina local e os programas adicionais devidamente instalados deve-se então inicializar o servidor realizando os seguintes procedimentos. A partir da pasta root do projeto acesse, através da linha de comando, o diretorio denominado *server* e em seguida de um start no servidor, para isso os comandos necessários podem ser encontrados abaixo:
 
 ```
 cd server
